@@ -76,21 +76,6 @@
       border-color: var(--accent);
       color: var(--accent);
     }
-    .contacts .my-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      padding: 10px 20px;
-      margin: 0;
-      background-color: var(--accent);
-      color: var(--bg);
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      transition: background-color 0.2s;
-    }
-    .contacts .my-btn:hover { background-color: #7dd3fc; }
     a:focus-visible, button:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 4px;
@@ -337,11 +322,11 @@
           Email
         </button>
 
-        <!-- my_CV：保留原本的 GitHub 目的地，在新分頁開啟。 -->
+        <!-- my_CV：在新分頁直接開啟完整履歷。 -->
         <button type="button" class="contact-button" hidden
-                data-contact-url="https://github.com/Willy1012-Tu"
+                data-contact-url="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
                 data-contact-target="_blank"
-                aria-label="my_CV：在新分頁開啟 GitHub">
+                aria-label="my_CV：在新分頁查看完整履歷">
           my_CV
         </button>
 
@@ -350,14 +335,10 @@
           <span class="contact-fallback">
           <a class="contact-button"
              href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=df961210%40gmail.com">Email</a>
-          <a class="contact-button" href="https://github.com/Willy1012-Tu"
+          <a class="contact-button" href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
              target="_blank" rel="noopener noreferrer">my_CV</a>
           </span>
         </noscript>
-        <a href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
-           target="_blank" rel="noopener noreferrer" class="my-btn">
-          <span aria-hidden="true">📄</span><span>點擊查看完整履歷</span>
-        </a>
       </div>
     </header>
 
@@ -583,7 +564,7 @@
     "use strict";
 
     // 聯絡按鈕：點擊即跳轉，不顯示網址對話框，也不自動寄信。
-    // Email 在目前分頁開啟 Gmail；my_CV 維持在新分頁開啟 GitHub。
+    // Email 在目前分頁開啟 Gmail；my_CV 在新分頁開啟完整履歷。
     document.querySelectorAll("[data-contact-url]").forEach((button) => {
       const url = button.dataset.contactUrl;
       if (!url) return;
