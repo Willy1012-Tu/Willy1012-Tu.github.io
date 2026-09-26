@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Li-Wen Tu | Robotics & Embedded Systems</title>
+  <style>
+    :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --accent: #38bdf8; --sub: #94a3b8; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 2rem 1rem; }
+    .container { max-width: 800px; margin: 0 auto; }
+    header { margin-bottom: 2.5rem; border-bottom: 1px solid #334155; padding-bottom: 1.5rem; }
+    h1 { margin: 0; font-size: 2.2rem; color: #fff; }
+    .subtitle { color: var(--accent); font-size: 1.1rem; margin-top: 0.5rem; }
+    .contacts { margin-top: 1rem; display: flex; gap: 1rem; font-size: 0.95rem; }
+    .contacts a { color: var(--text); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+    h2 { color: #fff; border-left: 4px solid var(--accent); padding-left: 0.75rem; margin-top: 2rem; font-size: 1.4rem; }
+    .project-card { background: var(--card); padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #334155; }
+    .project-title { font-weight: bold; font-size: 1.1rem; color: #fff; margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
+    .tag { font-size: 0.75rem; background: #0284c7; color: #fff; padding: 2px 8px; border-radius: 4px; }
+    .desc { font-size: 0.95rem; color: var(--sub); margin: 0.5rem 0 0 0; }
+    .skills span { display: inline-block; background: #334155; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; margin: 0 6px 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>涂力文 (Li-Wen Tu)</h1>
+      <div class="subtitle">Embedded Systems | Motor Control & Robotics Integration</div>
+      <div class="contacts">
+        <a href="mailto:df961210@gmail.com">Email</a>
+        <a href="https://github.com/你的帳號" target="_blank">GitHub</a>
+      </div>
+    </header>
+
+    <h2>專案與競賽經歷 (Projects & Competitions)</h2>
+    
+    <div class="project-card">
+      <div class="project-title">
+        <span>THTMD 國際微電子設計工作坊 - 方塊抓取機器人</span>
+        <span class="tag">First Place</span>
+      </div>
+      <p class="desc">主導競賽載具之軟硬體整合架構，針對競賽取物任務進行抓取可靠度最佳化與電路佈局，獲國際跨校團隊第一名。</p>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">
+        <span>CR 杯機電整合設計競賽 - 遙控全車機電系統</span>
+        <span class="tag">3rd Place</span>
+      </div>
+      <p class="desc">從零架構全車底盤電控與嵌入式韌體，撰寫閉迴路軟體馬達 PID 控制演算法以取代剛性連鎖結構，顯著提升搖桿動態操控反應。</p>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">
+        <span>火星盃全國火箭競賽 (TASA RTC) - 核心航電系統</span>
+        <span class="tag">Merit Award</span>
+      </div>
+      <p class="desc">負責核心航電 Payload 硬體設計，使用 ESP32 整合 MPU6050 姿態估測與高頻 SPI 飛行數據黑盒子記錄。</p>
+    </div>
+
+    <h2>核心技術 (Technical Skills)</h2>
+    <div class="skills">
+      <span>ESP32</span> <span>STM32</span> <span>Teensy 4.0</span> <span>Arduino</span>
+      <span>PID Control</span> <span>I2C / SPI / CAN Bus</span>
+      <span>C / C++</span> <span>Python</span> <span>MATLAB / Simulink</span>
+      <span>3D CAD / Prototyping</span>
+    </div>
+  </div>
+</body>
+</html>
