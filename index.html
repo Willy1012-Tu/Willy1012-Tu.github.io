@@ -11,8 +11,61 @@
     header { margin-bottom: 2.5rem; border-bottom: 1px solid #334155; padding-bottom: 1.5rem; }
     h1 { margin: 0; font-size: 2.2rem; color: #fff; }
     .subtitle { color: var(--accent); font-size: 1.1rem; margin-top: 0.5rem; }
-    .contacts { margin-top: 1rem; display: flex; gap: 1rem; font-size: 0.95rem; }
-    .contacts a { color: var(--text); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+    /* 聯絡連結與履歷按鈕的排列 */
+.contacts {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.95rem;
+}
+
+/* 所有聯絡連結的共用設定 */
+.contacts a {
+  text-decoration: none;
+}
+
+/* Email、my_CV：只有文字連結使用虛線底框 */
+.contacts .contact-link {
+  color: var(--text);
+  border-bottom: 1px dashed var(--accent);
+  padding-bottom: 2px;
+}
+
+.contacts .contact-link:hover {
+  color: var(--accent);
+}
+
+/* 履歷按鈕：獨立設定，不套用文字連結的底框 */
+.contacts .my-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  padding: 10px 20px;
+  margin: 0;
+
+  background-color: var(--accent);
+  color: var(--bg);
+  font-weight: bold;
+
+  border: none;
+  border-radius: 6px;
+
+  transition: background-color 0.2s;
+}
+
+.contacts .my-btn:hover {
+  background-color: #7dd3fc;
+}
+
+/* 保留鍵盤操作時的焦點提示 */
+.contacts a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
     h2 { color: #fff; border-left: 4px solid var(--accent); padding-left: 0.75rem; margin-top: 2rem; font-size: 1.4rem; }
     .project-card { background: var(--card); padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #334155; }
     .project-title { font-weight: bold; font-size: 1.1rem; color: #fff; margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
@@ -27,31 +80,37 @@
       <h1>涂力文 (Li-Wen Tu)</h1>
       <div class="subtitle">Embedded Systems | Motor Control & Robotics Integration</div>
       <div class="contacts">
-        <a href="mail to : df961210@gmail.com">Email</a>
-        <a href="https://github.com/Willy1012-Tu" target="_blank">my_CV</a>
-        <!-- target="_blank" 代表點擊後「自動在新分頁開啟」，不會關掉原本的網頁 -->
-<a href="https://drive.google.com/file/d/1X9Dray0M0GT_eeK2kqNx0yiUwHhoj_jf/view?usp=sharing" target="_blank" class="my-btn">
-  📄 點擊查看完整履歷
-</a>
 
-<!-- 按鈕外觀樣式（加在 <style> 標籤內） -->
-<style>
-  .my-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #38bdf8;
-    color: #0f172a;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 6px;
-    margin-top: 10px;
-    transition: background-color 0.2s;
-  }
-  .my-btn:hover {
-    background-color: #7dd3fc;
-  }
-</style>
-      </div>
+  <!-- Email -->
+  <a
+    href="mailto:df961210@gmail.com"
+    class="contact-link"
+  >
+    Email
+  </a>
+
+  <!-- GitHub 連結：保留原本的 my_CV 顯示文字 -->
+  <a
+    href="https://github.com/Willy1012-Tu"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="contact-link"
+  >
+    my_CV
+  </a>
+
+  <!-- 完整履歷 -->
+  <a
+    href="https://drive.google.com/file/d/1X9Dray0M0GT_eeK2kqNx0yiUwHhoj_jf/view?usp=sharing"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="my-btn"
+  >
+    <span aria-hidden="true">📄</span>
+    <span>點擊查看完整履歷</span>
+  </a>
+
+</div>
     </header>
 
     <h2>專案與競賽經歷 (Projects & Competitions)</h2>
