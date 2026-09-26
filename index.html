@@ -3,150 +3,635 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Li-Wen Tu | Robotics & Embedded Systems</title>
+  <title>Li-Wen Tu | Robotics &amp; Embedded Systems</title>
   <link rel="icon" type="image/png" href="./favicon.PNG">
   <style>
-    :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --accent: #38bdf8; --sub: #94a3b8; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 2rem 1rem; }
-    .container { max-width: 800px; margin: 0 auto; }
-    header { margin-bottom: 2.5rem; border-bottom: 1px solid #334155; padding-bottom: 1.5rem; }
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+      --sub: #94a3b8;
+      --line: #334155;
+
+      /* 三個專案共用同一個尺寸；320px 寬、4:3 = 240px 高。 */
+      --media-width: 320px;
+      --media-ratio: 4 / 3;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1.5rem;
+    }
     h1 { margin: 0; font-size: 2.2rem; color: #fff; }
     .subtitle { color: var(--accent); font-size: 1.1rem; margin-top: 0.5rem; }
-    /* 聯絡連結與履歷按鈕的排列 */
-.contacts {
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.95rem;
-}
 
-/* 所有聯絡連結的共用設定 */
-.contacts a {
-  text-decoration: none;
-}
+    .contacts {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+    .contacts a { text-decoration: none; }
+    .contacts .contact-link {
+      color: var(--text);
+      border-bottom: 1px dashed var(--accent);
+      padding-bottom: 2px;
+    }
+    .contacts .contact-link:hover { color: var(--accent); }
+    .contacts .my-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 10px 20px;
+      margin: 0;
+      background-color: var(--accent);
+      color: var(--bg);
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    .contacts .my-btn:hover { background-color: #7dd3fc; }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+    button { font: inherit; }
 
-/* Email、my_CV：只有文字連結使用虛線底框 */
-.contacts .contact-link {
-  color: var(--text);
-  border-bottom: 1px dashed var(--accent);
-  padding-bottom: 2px;
-}
+    h2 {
+      color: #fff;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+      margin-top: 2rem;
+      font-size: 1.4rem;
+    }
 
-.contacts .contact-link:hover {
-  color: var(--accent);
-}
+    /* 左側介紹 + 右側固定尺寸展示格。 */
+    .project-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--media-width);
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--card);
+      padding: 1.2rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--line);
+    }
+    .project-content { min-width: 0; }
+    .project-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .project-title h3 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #fff;
+      margin: 0;
+    }
+    .tag {
+      font-size: 0.75rem;
+      background: #0284c7;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .desc { font-size: 0.95rem; color: var(--sub); margin: 0; }
 
-/* 履歷按鈕：獨立設定，不套用文字連結的底框 */
-.contacts .my-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+    /* 所有媒體共用一個框；隱藏分頁不會占用額外高度。 */
+    .project-gallery {
+      width: 100%;
+      max-width: var(--media-width);
+      min-width: 0;
+      justify-self: end;
+    }
+    .gallery-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: var(--media-ratio);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #0b1323;
+      isolation: isolate;
+    }
+    .gallery-slide { position: absolute; inset: 0; }
+    .media-image-link {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      cursor: zoom-in;
+    }
+    .media-image-link:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: -4px;
+      border-radius: 8px;
+    }
+    .gallery-slide img, .gallery-slide video {
+      display: block;
+      width: 100%;
+      height: 100%;
 
-  padding: 10px 20px;
-  margin: 0;
+      /* 完整呈現獎狀／車子／影片，不裁切、不拉伸。 */
+      object-fit: contain;
+      object-position: center;
+    }
+    .gallery-slide video {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: #0b1323;
+      color-scheme: dark;
+    }
 
-  background-color: var(--accent);
-  color: var(--bg);
-  font-weight: bold;
+    /* 媒體尚未放入或載入失敗，維持格子大小並顯示路徑。 */
+    .media-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 1rem;
+      text-align: center;
+      color: var(--sub);
+    }
+    .placeholder-icon {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 0.4rem;
+      border: 1px solid #244158;
+      border-radius: 12px;
+      background: #122438;
+      color: var(--accent);
+    }
+    .placeholder-icon svg { width: 32px; height: 32px; }
+    .media-placeholder strong { color: var(--text); font-size: 0.92rem; font-weight: 500; }
+    .media-placeholder small { font-size: 0.75rem; }
+    .media-placeholder code {
+      max-width: 100%;
+      color: #b7c6d9;
+      font-size: 0.72rem;
+      overflow-wrap: anywhere;
+    }
 
-  border: none;
-  border-radius: 6px;
+    /* 標題、頁數與圓點全部放在框外，不遮住獎狀或影片控制列。 */
+    .gallery-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      height: 28px;
+      margin-top: 6px;
+      font-size: 0.8rem;
+    }
+    .gallery-label { color: var(--text); }
+    .gallery-count { color: var(--sub); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .gallery-controls {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2px;
+    }
+    .gallery-arrow {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+    .gallery-arrow svg { width: 18px; height: 18px; }
+    .gallery-arrow:hover {
+      background: #28374b;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .gallery-dot {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+    }
+    .gallery-dot::before {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--sub);
+      transition: width 0.15s, background-color 0.15s;
+    }
+    .gallery-dot[aria-current="true"]::before { width: 22px; background: var(--accent); }
+    .gallery-dot:hover::before { background: var(--accent); }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .no-js-note { color: var(--sub); font-size: 0.85rem; }
+    .skills span {
+      display: inline-block;
+      background: var(--line);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin: 0 6px 6px 0;
+    }
 
-  transition: background-color 0.2s;
-}
-
-.contacts .my-btn:hover {
-  background-color: #7dd3fc;
-}
-
-/* 保留鍵盤操作時的焦點提示 */
-.contacts a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-}
-    h2 { color: #fff; border-left: 4px solid var(--accent); padding-left: 0.75rem; margin-top: 2rem; font-size: 1.4rem; }
-    .project-card { background: var(--card); padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #334155; }
-    .project-title { font-weight: bold; font-size: 1.1rem; color: #fff; margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
-    .tag { font-size: 0.75rem; background: #0284c7; color: #fff; padding: 2px 8px; border-radius: 4px; }
-    .desc { font-size: 0.95rem; color: var(--sub); margin: 0.5rem 0 0 0; }
-    .skills span { display: inline-block; background: #334155; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; margin: 0 6px 6px 0; }
+    /* 手機改成上下排列；三個框仍同寬同高，空間不足時等比例縮小。 */
+    @media (max-width: 720px) {
+      body { padding: 1.5rem 1rem; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.25rem; }
+      .project-card { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+      .project-gallery { justify-self: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>涂力文 (Li-Wen Tu)</h1>
-      <div class="subtitle">Embedded Systems | Motor Control & Robotics Integration</div>
+      <div class="subtitle">Embedded Systems | Motor Control &amp; Robotics Integration</div>
       <div class="contacts">
-
-  <!-- Email -->
-  <a
-    href="mailto:df961210@gmail.com"
-    class="contact-link"
-  >
-    Email
-  </a>
-
-  <!-- GitHub 連結：保留原本的 my_CV 顯示文字 -->
-  <a
-    href="https://github.com/Willy1012-Tu"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="contact-link"
-  >
-    my_CV
-  </a>
-
-  <!-- 完整履歷 -->
-  <a
-    href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="my-btn"
-  >
-    <span aria-hidden="true">📄</span>
-    <span>點擊查看完整履歷</span>
-  </a>
-
-</div>
+        <a href="mailto:df961210@gmail.com" class="contact-link">Email</a>
+        <a href="https://github.com/Willy1012-Tu" target="_blank"
+           rel="noopener noreferrer" class="contact-link">my_CV</a>
+        <a href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
+           target="_blank" rel="noopener noreferrer" class="my-btn">
+          <span aria-hidden="true">📄</span><span>點擊查看完整履歷</span>
+        </a>
+      </div>
     </header>
 
-    <h2>專案與競賽經歷 (Projects & Competitions)</h2>
-    
-    <div class="project-card">
-      <div class="project-title">
-        <span>THTMD 國際微電子設計工作坊 - 方塊抓取機器人</span>
-        <span class="tag">First Place</span>
-      </div>
-      <p class="desc">主導競賽載具之軟硬體整合架構，針對競賽取物任務進行抓取可靠度最佳化與電路佈局，獲國際跨校團隊第一名。</p>
-    </div>
+    <main>
+      <h2>專案與競賽經歷 (Projects &amp; Competitions)</h2>
+      <noscript><p class="no-js-note">請啟用 JavaScript，才能使用分頁按鈕查看其他照片或影片。</p></noscript>
 
-    <div class="project-card">
-      <div class="project-title">
-        <span>CR 杯機電整合設計競賽 - 遙控全車機電系統</span>
-        <span class="tag">3rd Place</span>
-      </div>
-      <p class="desc">從零架構全車底盤電控與嵌入式韌體，撰寫閉迴路軟體馬達 PID 控制演算法以取代剛性連鎖結構，顯著提升搖桿動態操控反應。</p>
-    </div>
+      <!-- THTMD：每頁只放一個媒體；要換檔案，修改對應的 src。 -->
+      <article class="project-card" aria-labelledby="thtmd-title">
+        <div class="project-content">
+          <div class="project-title">
+            <h3 id="thtmd-title">THTMD 國際微電子設計工作坊 - 方塊抓取機器人</h3>
+            <span class="tag">First Place</span>
+          </div>
+          <p class="desc">主導競賽載具之軟硬體整合架構，針對競賽取物任務進行抓取可靠度最佳化與電路佈局，獲國際跨校團隊第一名。</p>
+        </div>
 
-    <div class="project-card">
-      <div class="project-title">
-        <span>TASA RTC - 核心航電系統</span>
-        <span class="tag">Merit Award</span>
-      </div>
-      <p class="desc">負責核心航電 Payload 硬體設計，使用 ESP32 整合 MPU6050 姿態估測與高頻 SPI 飛行數據黑盒子記錄。</p>
-    </div>
+        <div class="project-gallery" data-gallery id="thtmd-gallery"
+             role="group" aria-roledescription="輪播圖" aria-label="THTMD 專案媒體">
+          <div class="gallery-frame" id="thtmd-frame">
+            <!-- 第 1 頁：獎狀 -->
+            <div class="gallery-slide" id="thtmd-slide-1" data-label="獎狀"
+                 role="group" aria-roledescription="投影片" aria-label="1 / 2：獎狀">
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="18" height="24" rx="2"/><path d="M10 9h10M10 13h10M10 17h4"/><circle cx="22" cy="23" r="4"/><path d="m19.5 26-1 5 3.5-2 3.5 2-1-5"/></svg></span>
+                <strong>THTMD · 獎狀</strong>
+                <small>圖片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>images/thtmd-award.jpg</code>
+              </div>
+              <a class="media-image-link" href="./images/thtmd-award.jpg" target="_blank" rel="noopener noreferrer"
+                 aria-label="在新分頁查看THTMD 競賽獎狀原圖" title="點選查看原圖（新分頁）">
+                <img src="./images/thtmd-award.jpg" alt="THTMD 競賽獎狀" decoding="async">
+              </a>
+            </div>
+            <!-- 第 2 頁：車子照片 -->
+            <div class="gallery-slide" id="thtmd-slide-2" data-label="車子照片"
+                 role="group" aria-roledescription="投影片" aria-label="2 / 2：車子照片" hidden>
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13h22v10H5zM9 13l3-7h8l3 7"/><path d="M10 18h1M21 18h1M16 6V3"/><circle cx="10" cy="25" r="3"/><circle cx="23" cy="25" r="3"/></svg></span>
+                <strong>THTMD · 車子照片</strong>
+                <small>圖片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>images/thtmd.jpg</code>
+              </div>
+              <a class="media-image-link" href="./images/thtmd.jpg" target="_blank" rel="noopener noreferrer"
+                 aria-label="在新分頁查看THTMD 方塊抓取機器人車子照片原圖" title="點選查看原圖（新分頁）">
+                <img src="./images/thtmd.jpg" alt="THTMD 方塊抓取機器人車子照片" decoding="async">
+              </a>
+            </div>
+          </div>
+          <div class="gallery-caption" aria-hidden="true">
+            <span class="gallery-label">獎狀</span>
+            <span class="gallery-count">1 / 2</span>
+          </div>
+          <div class="gallery-controls" hidden>
+            <button type="button" class="gallery-arrow" data-prev
+                    aria-label="THTMD：上一頁" aria-controls="thtmd-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
+            </button>
+            <div class="gallery-dots" role="group" aria-label="THTMD：選擇頁面">
+              <button type="button" class="gallery-dot" aria-label="第 1 頁：獎狀"
+                      aria-controls="thtmd-slide-1" title="獎狀" aria-current="true"></button>
+              <button type="button" class="gallery-dot" aria-label="第 2 頁：車子照片"
+                      aria-controls="thtmd-slide-2" title="車子照片"></button>
+            </div>
+            <button type="button" class="gallery-arrow" data-next
+                    aria-label="THTMD：下一頁" aria-controls="thtmd-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <span class="gallery-status sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
+        </div>
+      </article>
 
-    <h2>核心技術 (Technical Skills)</h2>
-    <div class="skills">
-      <span>ESP32</span> <span>STM32</span> <span>Teensy 4.0</span> <span>Arduino</span>
-      <span>PID Control</span> <span>I2C / SPI / CAN Bus</span>
-      <span>C / C++</span> <span>Python</span> <span>MATLAB / Simulink</span>
-      <span>3D CAD / Prototyping</span>
-    </div>
+      <!-- CR 杯：每頁只放一個媒體；要換檔案，修改對應的 src。 -->
+      <article class="project-card" aria-labelledby="cr-title">
+        <div class="project-content">
+          <div class="project-title">
+            <h3 id="cr-title">CR 杯機電整合設計競賽 - 遙控全車機電系統</h3>
+            <span class="tag">3rd Place</span>
+          </div>
+          <p class="desc">從零架構全車底盤電控與嵌入式韌體，撰寫閉迴路軟體馬達 PID 控制演算法以取代剛性連鎖結構，顯著提升搖桿動態操控反應。</p>
+        </div>
+
+        <div class="project-gallery" data-gallery id="cr-gallery"
+             role="group" aria-roledescription="輪播圖" aria-label="CR 杯 專案媒體">
+          <div class="gallery-frame" id="cr-frame">
+            <!-- 第 1 頁：獎狀 -->
+            <div class="gallery-slide" id="cr-slide-1" data-label="獎狀"
+                 role="group" aria-roledescription="投影片" aria-label="1 / 2：獎狀">
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="18" height="24" rx="2"/><path d="M10 9h10M10 13h10M10 17h4"/><circle cx="22" cy="23" r="4"/><path d="m19.5 26-1 5 3.5-2 3.5 2-1-5"/></svg></span>
+                <strong>CR 杯 · 獎狀</strong>
+                <small>圖片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>images/cr-cup-award.jpg</code>
+              </div>
+              <a class="media-image-link" href="./images/cr-cup-award.jpg" target="_blank" rel="noopener noreferrer"
+                 aria-label="在新分頁查看CR 杯競賽獎狀原圖" title="點選查看原圖（新分頁）">
+                <img src="./images/cr-cup-award.jpg" alt="CR 杯競賽獎狀" decoding="async">
+              </a>
+            </div>
+            <!-- 第 2 頁：車子照片 -->
+            <div class="gallery-slide" id="cr-slide-2" data-label="車子照片"
+                 role="group" aria-roledescription="投影片" aria-label="2 / 2：車子照片" hidden>
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13h22v10H5zM9 13l3-7h8l3 7"/><path d="M10 18h1M21 18h1M16 6V3"/><circle cx="10" cy="25" r="3"/><circle cx="23" cy="25" r="3"/></svg></span>
+                <strong>CR 杯 · 車子照片</strong>
+                <small>圖片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>images/cr-cup-1.jpg</code>
+              </div>
+              <a class="media-image-link" href="./images/cr-cup-1.jpg" target="_blank" rel="noopener noreferrer"
+                 aria-label="在新分頁查看CR 杯遙控全車機電系統車子照片原圖" title="點選查看原圖（新分頁）">
+                <img src="./images/cr-cup-1.jpg" alt="CR 杯遙控全車機電系統車子照片" decoding="async">
+              </a>
+            </div>
+          </div>
+          <div class="gallery-caption" aria-hidden="true">
+            <span class="gallery-label">獎狀</span>
+            <span class="gallery-count">1 / 2</span>
+          </div>
+          <div class="gallery-controls" hidden>
+            <button type="button" class="gallery-arrow" data-prev
+                    aria-label="CR 杯：上一頁" aria-controls="cr-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
+            </button>
+            <div class="gallery-dots" role="group" aria-label="CR 杯：選擇頁面">
+              <button type="button" class="gallery-dot" aria-label="第 1 頁：獎狀"
+                      aria-controls="cr-slide-1" title="獎狀" aria-current="true"></button>
+              <button type="button" class="gallery-dot" aria-label="第 2 頁：車子照片"
+                      aria-controls="cr-slide-2" title="車子照片"></button>
+            </div>
+            <button type="button" class="gallery-arrow" data-next
+                    aria-label="CR 杯：下一頁" aria-controls="cr-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <span class="gallery-status sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
+        </div>
+      </article>
+
+      <!-- TASA：每頁只放一個媒體；要換檔案，修改對應的 src。 -->
+      <article class="project-card" aria-labelledby="tasa-title">
+        <div class="project-content">
+          <div class="project-title">
+            <h3 id="tasa-title">TASA RTC - 核心航電系統</h3>
+            <span class="tag">Merit Award</span>
+          </div>
+          <p class="desc">負責核心航電 Payload 硬體設計，使用 ESP32 整合 MPU6050 姿態估測與高頻 SPI 飛行數據黑盒子記錄。</p>
+        </div>
+
+        <div class="project-gallery" data-gallery id="tasa-gallery"
+             role="group" aria-roledescription="輪播圖" aria-label="TASA 專案媒體">
+          <div class="gallery-frame" id="tasa-frame">
+            <!-- 第 1 頁：專案影片 -->
+            <div class="gallery-slide" id="tasa-slide-1" data-label="專案影片"
+                 role="group" aria-roledescription="投影片" aria-label="1 / 2：專案影片">
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="4"/><path d="m13 11 8 5-8 5z"/></svg></span>
+                <strong>TASA · 專案影片</strong>
+                <small>影片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>videos/tasa.mp4</code>
+              </div>
+              <!-- 不自動播放；切換到獎狀時會暫停影片。 -->
+              <video src="./videos/tasa.mp4" controls muted playsinline preload="metadata"
+                     aria-label="TASA RTC 核心航電系統專案影片">
+                您的瀏覽器不支援影片播放。<a href="./videos/tasa.mp4">開啟影片檔案</a>
+              </video>
+            </div>
+            <!-- 第 2 頁：獎狀 -->
+            <div class="gallery-slide" id="tasa-slide-2" data-label="獎狀"
+                 role="group" aria-roledescription="投影片" aria-label="2 / 2：獎狀" hidden>
+              <div class="media-placeholder">
+                <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="18" height="24" rx="2"/><path d="M10 9h10M10 13h10M10 17h4"/><circle cx="22" cy="23" r="4"/><path d="m19.5 26-1 5 3.5-2 3.5 2-1-5"/></svg></span>
+                <strong>TASA · 獎狀</strong>
+                <small>圖片尚未載入，請確認檔案路徑</small>
+                <code data-file-name>images/tasa-award.jpg</code>
+              </div>
+              <a class="media-image-link" href="./images/tasa-award.jpg" target="_blank" rel="noopener noreferrer"
+                 aria-label="在新分頁查看TASA RTC 競賽獎狀原圖" title="點選查看原圖（新分頁）">
+                <img src="./images/tasa-award.jpg" alt="TASA RTC 競賽獎狀" decoding="async">
+              </a>
+            </div>
+          </div>
+          <div class="gallery-caption" aria-hidden="true">
+            <span class="gallery-label">專案影片</span>
+            <span class="gallery-count">1 / 2</span>
+          </div>
+          <div class="gallery-controls" hidden>
+            <button type="button" class="gallery-arrow" data-prev
+                    aria-label="TASA：上一頁" aria-controls="tasa-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
+            </button>
+            <div class="gallery-dots" role="group" aria-label="TASA：選擇頁面">
+              <button type="button" class="gallery-dot" aria-label="第 1 頁：專案影片"
+                      aria-controls="tasa-slide-1" title="專案影片" aria-current="true"></button>
+              <button type="button" class="gallery-dot" aria-label="第 2 頁：獎狀"
+                      aria-controls="tasa-slide-2" title="獎狀"></button>
+            </div>
+            <button type="button" class="gallery-arrow" data-next
+                    aria-label="TASA：下一頁" aria-controls="tasa-frame">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <span class="gallery-status sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
+        </div>
+      </article>
+
+      <h2>核心技術 (Technical Skills)</h2>
+      <div class="skills">
+        <span>ESP32</span> <span>STM32</span> <span>Teensy 4.0</span> <span>Arduino</span>
+        <span>PID Control</span> <span>I2C / SPI / CAN Bus</span>
+        <span>C / C++</span> <span>Python</span> <span>MATLAB / Simulink</span>
+        <span>3D CAD / Prototyping</span>
+      </div>
+    </main>
   </div>
+  <script>
+    "use strict";
+
+    // 每個專案各自切換，不會影響其他專案；不使用自動輪播。
+    document.querySelectorAll("[data-gallery]").forEach((gallery) => {
+      const slides = Array.from(gallery.querySelectorAll(".gallery-slide"));
+      const dots = Array.from(gallery.querySelectorAll(".gallery-dot"));
+      const label = gallery.querySelector(".gallery-label");
+      const counter = gallery.querySelector(".gallery-count");
+      const status = gallery.querySelector(".gallery-status");
+      const controls = gallery.querySelector(".gallery-controls");
+      const previous = gallery.querySelector("[data-prev]");
+      const next = gallery.querySelector("[data-next]");
+      if (slides.length === 0) return;
+      let current = 0;
+
+      // 媒體載入失敗時顯示提示；檔名提示會跟著 src 更新。
+      slides.forEach((slide) => {
+        const media = slide.querySelector("img, video");
+        const placeholder = slide.querySelector(".media-placeholder");
+        const fileName = slide.querySelector("[data-file-name]");
+        if (!media) return;
+        const path = media.getAttribute("src") || "";
+        if (fileName) fileName.textContent = path.replace(/^\.\//, "");
+
+        if (media.tagName === "IMG") {
+          const link = slide.querySelector(".media-image-link");
+          // 只改 img 的 src，點選原圖的連結也會自動同步。
+          if (link && path) link.setAttribute("href", path);
+          const setImageState = (loaded) => {
+            if (link) link.hidden = !loaded;
+            if (placeholder) placeholder.hidden = loaded;
+          };
+          media.addEventListener("load", () => setImageState(true));
+          media.addEventListener("error", () => setImageState(false));
+          if (media.complete) setImageState(media.naturalWidth > 0);
+        } else {
+          const setVideoState = (loaded) => {
+            media.hidden = !loaded;
+            if (placeholder) placeholder.hidden = loaded;
+          };
+          media.addEventListener("loadedmetadata", () => setVideoState(true));
+          media.addEventListener("error", () => setVideoState(false));
+          if (media.error) setVideoState(false);
+          else if (media.readyState >= 1) setVideoState(true);
+        }
+      });
+
+      const showSlide = (requested, announce = true) => {
+        const newIndex = (requested + slides.length) % slides.length;
+        const changed = newIndex !== current;
+        current = newIndex;
+
+        slides.forEach((slide, index) => {
+          const active = index === current;
+          // 切走影片頁時停止播放，但保留進度，切回後可手動續播。
+          if (!active) slide.querySelectorAll("video").forEach((video) => video.pause());
+          slide.hidden = !active;
+        });
+        dots.forEach((dot, index) => {
+          if (index === current) dot.setAttribute("aria-current", "true");
+          else dot.removeAttribute("aria-current");
+        });
+        const text = slides[current].dataset.label || "媒體";
+        label.textContent = text;
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        gallery.dataset.activeIndex = String(current);
+        if (announce && changed) {
+          status.textContent = `第 ${current + 1} 頁，共 ${slides.length} 頁：${text}`;
+        }
+      };
+
+      previous.addEventListener("click", () => showSlide(current - 1));
+      next.addEventListener("click", () => showSlide(current + 1));
+      dots.forEach((dot, index) => dot.addEventListener("click", () => showSlide(index)));
+
+      // 焦點位於輪播圖內時，可用左右鍵、Home、End 切換。
+      // 不攔截原生影片控制鍵，以免影響音量與播放進度操作。
+      gallery.addEventListener("keydown", (event) => {
+        if (event.target.closest("video") || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        let target;
+        if (event.key === "ArrowLeft") target = current - 1;
+        else if (event.key === "ArrowRight") target = current + 1;
+        else if (event.key === "Home") target = 0;
+        else if (event.key === "End") target = slides.length - 1;
+        else return;
+        event.preventDefault();
+        showSlide(target);
+        // 圖片連結切換後會隱藏，避免焦點留在已隱藏的頁面。
+        if (event.target.closest(".gallery-slide")) dots[current].focus();
+      });
+
+      controls.hidden = slides.length <= 1;
+      showSlide(0, false);
+    });
+  </script>
 </body>
 </html>
