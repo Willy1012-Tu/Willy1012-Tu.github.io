@@ -52,7 +52,7 @@
     .contacts a { text-decoration: none; }
     .contacts .contact-fallback { display: inline-flex; flex-wrap: wrap; gap: 1rem; }
 
-    /* Email / my_CV 改為按鈕，不再使用虛線文字連結。 */
+    /* Mail / GitHub / CV 共用按鈕樣式，不使用虛線文字連結。 */
     .contacts .contact-button {
       appearance: none;
       display: inline-flex;
@@ -314,29 +314,44 @@
       <h1>涂力文 (Li-Wen Tu)</h1>
       <div class="subtitle">Embedded Systems | Motor Control &amp; Robotics Integration</div>
       <div class="contacts">
-        <!-- Email：在目前分頁直接開啟 Gmail 寫信頁面；不會自動寄信。 -->
+        <!-- Mail：在目前分頁直接開啟 Gmail 寫信頁面；不會自動寄信。 -->
         <button type="button" class="contact-button" hidden
                 data-contact-url="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=df961210%40gmail.com"
                 data-contact-target="_self"
-                aria-label="Email：前往 Gmail 撰寫郵件">
-          Email
+                aria-label="Mail：前往 Gmail 撰寫郵件">
+          Mail
         </button>
 
-        <!-- my_CV：在新分頁直接開啟完整履歷。 -->
+        <!-- GitHub：在新分頁開啟 GitHub 個人頁面。 -->
+        <button type="button" class="contact-button" hidden
+                data-contact-url="https://github.com/Willy1012-Tu"
+                data-contact-target="_blank"
+                aria-label="GitHub：在新分頁開啟 GitHub 個人頁面">
+          GitHub
+        </button>
+
+        <!-- CV：在新分頁直接開啟完整履歷。 -->
         <button type="button" class="contact-button" hidden
                 data-contact-url="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
                 data-contact-target="_blank"
-                aria-label="my_CV：在新分頁查看完整履歷">
-          my_CV
+                aria-label="CV：在新分頁查看完整履歷">
+          CV
         </button>
 
         <!-- 未啟用 JavaScript 時，仍可使用一般連結。 -->
         <noscript>
           <span class="contact-fallback">
-          <a class="contact-button"
-             href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=df961210%40gmail.com">Email</a>
-          <a class="contact-button" href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
-             target="_blank" rel="noopener noreferrer">my_CV</a>
+            <a class="contact-button"
+               href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=df961210%40gmail.com"
+               aria-label="Mail：前往 Gmail 撰寫郵件">Mail</a>
+            <a class="contact-button"
+               href="https://github.com/Willy1012-Tu"
+               target="_blank" rel="noopener noreferrer"
+               aria-label="GitHub：在新分頁開啟 GitHub 個人頁面">GitHub</a>
+            <a class="contact-button"
+               href="https://drive.google.com/file/d/1IAO0-E_45MeIicDdjNHWnQpyZOCP1eDC/view?usp=sharing"
+               target="_blank" rel="noopener noreferrer"
+               aria-label="CV：在新分頁查看完整履歷">CV</a>
           </span>
         </noscript>
       </div>
@@ -380,11 +395,11 @@
                 <span class="placeholder-icon"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13h22v10H5zM9 13l3-7h8l3 7"/><path d="M10 18h1M21 18h1M16 6V3"/><circle cx="10" cy="25" r="3"/><circle cx="23" cy="25" r="3"/></svg></span>
                 <strong>THTMD · 車子照片</strong>
                 <small>圖片尚未載入，請確認檔案路徑</small>
-                <code data-file-name>images/thtmd.jpg</code>
+                <code data-file-name>images/thtmd.png</code>
               </div>
-              <a class="media-image-link" href="./images/thtmd.jpg" target="_blank" rel="noopener noreferrer"
+              <a class="media-image-link" href="./images/thtmd.png" target="_blank" rel="noopener noreferrer"
                  aria-label="在新分頁查看THTMD 方塊抓取機器人車子照片原圖" title="點選查看原圖（新分頁）">
-                <img src="./images/thtmd.jpg" alt="THTMD 方塊抓取機器人車子照片" decoding="async">
+                <img src="./images/thtmd.png" alt="THTMD 方塊抓取機器人車子照片" decoding="async">
               </a>
             </div>
           </div>
@@ -564,7 +579,7 @@
     "use strict";
 
     // 聯絡按鈕：點擊即跳轉，不顯示網址對話框，也不自動寄信。
-    // Email 在目前分頁開啟 Gmail；my_CV 在新分頁開啟完整履歷。
+    // Mail 在目前分頁開啟 Gmail；GitHub 和 CV 分別在新分頁開啟。
     document.querySelectorAll("[data-contact-url]").forEach((button) => {
       const url = button.dataset.contactUrl;
       if (!url) return;
